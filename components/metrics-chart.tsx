@@ -6,6 +6,7 @@ import type { DeviceType, MetricType, MetricData as ProcessedMetricData } from "
 import { fetchMetricData } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useTheme } from "@/contexts/theme-context"
+import type { TooltipComponentFormatterCallbackParams } from "echarts/types/dist/shared"
 
 interface MetricsChartProps {
   metric: MetricType
@@ -83,11 +84,17 @@ export function MetricsChart({ metric, device, title }: MetricsChartProps) {
     ],
     tooltip: {
       trigger: "axis",
-      formatter: (params: any) => {
-        const dataPoint = data[params[0].dataIndex]
-        const date = new Date(dataPoint.timestamp * 1000).toLocaleDateString()
-        const value = dataPoint.value.toFixed(4)
-        return `${date}: ${value}`
+      formatter: (params: TooltipComponentFormatterCallbackParams[]) => {
+        if (Array.isArray(params) && params.length > 0) {
+          const dataIndex = params[0].dataIndex as number
+          const dataPoint = data[dataIndex]
+          if (dataPoint) {
+            const date = new Date(dataPoint.timestamp * 1000).toLocaleDateString()
+            const value = dataPoint.value.toFixed(4)
+            return `${date}: ${value}`
+          }
+        }
+        return ""
       },
       backgroundColor: theme === "dark" ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.7)",
       borderColor: theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",

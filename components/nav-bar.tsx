@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Zap, Moon, Sun, Menu } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/contexts/theme-context"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
